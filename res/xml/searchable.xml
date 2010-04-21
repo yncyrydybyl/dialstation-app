@@ -6,7 +6,7 @@
         android:includeInGlobalSearch="true"
         android:queryAfterZeroResults="true"
         android:searchSuggestThreshold="0"
-        android:searchSuggestAuthority="de.andlabs"
+        android:searchSuggestAuthority="org.telekommunisten"
         android:searchSettingsDescription="@string/search_settings_description"
         android:searchSuggestIntentAction="android.intent.action.SEARCH"
         >
