@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -31,7 +32,7 @@ public class ListPdn extends ListActivity {
 						convertView = new TextView(ListPdn.this);						
 					} 
 					cursor.moveToPosition(position);
-					((TextView) convertView).setText(cursor.getString(0));
+					((TextView) convertView).setText(cursor.getString(1));
 					return convertView;
 				}
 				
@@ -50,6 +51,7 @@ public class ListPdn extends ListActivity {
 				@Override
 				public int getCount() {
 					// TODO Auto-generated method stub
+					Log.d("ListPdn",cursor.getCount()+"<- cursor.length");
 					return cursor.getCount();
 				}
 			});
