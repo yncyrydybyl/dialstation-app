@@ -13,11 +13,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 public class ListPdn extends ListActivity {
 	    
 	    /** Called when the activity is first created. */
+	
+		@Override
+		public void onListItemClick(ListView l, View v, int pos,long id)
+		{
+			String pdntext = (String) l.getItemAtPosition(pos);
+			Log.d("dialstation",pdntext);
+		}
 	    @Override
 	    public void onCreate(Bundle savedInstanceState) {
 	        super.onCreate(savedInstanceState);
@@ -31,21 +39,25 @@ public class ListPdn extends ListActivity {
 					if (convertView == null) {
 						convertView = new TextView(ListPdn.this);						
 					} 
+					
 					cursor.moveToPosition(position);
-					((TextView) convertView).setText(cursor.getString(1));
+					((TextView) convertView).setText(cursor.getString(1)+"\n"+cursor.getString(cursor.getColumnIndex("destination")));
 					return convertView;
 				}
 				
 				@Override
 				public long getItemId(int position) {
+					cursor.moveToPosition(position);
+					return Long.valueOf(cursor.getString(cursor.getColumnIndex("id")));
+
 					// TODO Auto-generated method stub
-					return 0;
 				}
 				
 				@Override
 				public Object getItem(int position) {
 					// TODO Auto-generated method stub
-					return null;
+					cursor.moveToPosition(position);
+					return cursor.getString(1)+"\n"+cursor.getString(cursor.getColumnIndex("destination"));
 				}
 				
 				@Override

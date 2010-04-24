@@ -77,7 +77,7 @@ public class DialstationProvider extends RESTProvider {
 	public ResponseHandler<? extends AbstractCursor> getQueryHandler(Uri arg0) {
 		// TODO Auto-generated method stub
 		
-		return new JsonCursor("results",true);
+		return new JsonCursor();
 	}
 
 	@Override
