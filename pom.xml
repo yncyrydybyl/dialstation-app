@@ -1,33 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-<!--
+    <!--
 
 
-$ANDROID_HOME auf den sdk path setzen
-$JAVA_HOME setzen
-$M2_HOME auf das ausgepackte maven2 setzen 
+    $ANDROID_HOME auf den sdk path setzen
+    $JAVA_HOME setzen
+    $M2_HOME auf das ausgepackte maven2 setzen
 
-mvn -o install:install-file -DgroupId=android -DartifactId=android -Dversion=1.5_r3 -Dpackaging=jar -Dfile=$ANDROID_HOME/platforms/android-3/android.jar
-mvn -o install:install-file -DgroupId=android -DartifactId=android -Dversion=1.6_r2 -Dpackaging=jar -Dfile=$ANDROID_HOME/platforms/android-4/android.jar
-mvn -o install:install-file -DgroupId=android -DartifactId=android -Dversion=2.0.1_r1 -Dpackaging=jar -Dfile=$ANDROID_HOME/platforms/android-6/android.jar
-mvn -o install:install-file -DgroupId=android -DartifactId=android -Dversion=2.1_r1 -Dpackaging=jar -Dfile=$ANDROID_HOME/platforms/android-7/android.jar
+    mvn -o install:install-file -DgroupId=android -DartifactId=android -Dversion=1.5_r3 -Dpackaging=jar -Dfile=$ANDROID_HOME/platforms/android-3/android.jar
+    mvn -o install:install-file -DgroupId=android -DartifactId=android -Dversion=1.6_r2 -Dpackaging=jar -Dfile=$ANDROID_HOME/platforms/android-4/android.jar
+    mvn -o install:install-file -DgroupId=android -DartifactId=android -Dversion=2.0.1_r1 -Dpackaging=jar -Dfile=$ANDROID_HOME/platforms/android-6/android.jar
+    mvn -o install:install-file -DgroupId=android -DartifactId=android -Dversion=2.1_r1 -Dpackaging=jar -Dfile=$ANDROID_HOME/platforms/android-7/android.jar
 
-Jetzt noch das RESTProvider-Artefact aus ./lib installieren:
-curl http://github.com/novoda/RESTProvider/raw/master/RESTProvider/pom.xml  > rest.pom
+    Jetzt noch das RESTProvider-Artefact aus ./lib installieren:
+    curl http://github.com/novoda/RESTProvider/raw/master/RESTProvider/pom.xml  > rest.pom
 
-mvn -o install:install-file -DgroupId=novoda.rest -DartifactId=RESTProvider -Dversion=0.0.1-SNAPSHOT -Dpackaging=jar -Dfile=./lib/RESTProvider-0.0.1-SNAPSHOT.jar -DpomFile=rest.pom
-
-
-
-noch ein tip:
-
- - ab dem zweiten build, wenn alle dependencies da sind macht -o das bauen u.U. viel schneller
-
- - ggf. javaOpts="-Xmx384M" in $ANDROID_HOME/platform-4/tools/dx setzen, wenn out of memory fehler kommen
+    mvn -o install:install-file -DgroupId=novoda.rest -DartifactId=RESTProvider -Dversion=0.0.1-SNAPSHOT -Dpackaging=jar -Dfile=./lib/RESTProvider-0.0.1-SNAPSHOT.jar -DpomFile=rest.pom
 
 
--->
+
+    noch ein tip:
+
+     - ab dem zweiten build, wenn alle dependencies da sind macht -o das bauen u.U. viel schneller
+
+     - ggf. javaOpts="-Xmx384M" in $ANDROID_HOME/platform-4/tools/dx setzen, wenn out of memory fehler kommen
+
+
+    -->
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.telekommunisten.dialstation</groupId>
     <artifactId>dialstation</artifactId>
@@ -53,21 +53,21 @@ noch ein tip:
             <groupId>novoda.rest</groupId>
             <artifactId>RESTProvider</artifactId>
             <version>0.0.1-SNAPSHOT</version>
-        <exclusions>
-          <exclusion>
-            <groupId>org.mockito</groupId>
-            <artifactId>dom4j</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>maven</groupId>
-            <artifactId>dom4j</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>jaxen</groupId>
-            <artifactId>jaxen</artifactId>
-          </exclusion>
-        </exclusions>
-      </dependency>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.mockito</groupId>
+                    <artifactId>dom4j</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>maven</groupId>
+                    <artifactId>dom4j</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>jaxen</groupId>
+                    <artifactId>jaxen</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
     </dependencies>
     <build>
         <finalName>${artifactId}</finalName>
@@ -93,6 +93,28 @@ noch ein tip:
                     <target>1.6</target>
                 </configuration>
             </plugin>
+            <!-- ProGuard -->
+<!--
+            <plugin>
+                <groupId>com.pyx4me</groupId>
+                <artifactId>proguard-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>proguard</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <includeDependency>false</includeDependency>
+                    <injar>${project.build.finalName}.jar</injar>
+                    <outjar>${project.build.finalName}-small.jar</outjar>
+                    <proguardInclude>${basedir}/proguard.conf</proguardInclude>
+                </configuration>
+            </plugin>
+-->
+
 
         </plugins>
     </build>
