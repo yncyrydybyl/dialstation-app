@@ -13,6 +13,13 @@ mvn install:install-file -DgroupId=android -DartifactId=android -Dversion=1.6_r2
 mvn install:install-file -DgroupId=android -DartifactId=android -Dversion=2.0.1_r1 -Dpackaging=jar -Dfile=$ANDROID_HOME/platforms/android-6/android.jar
 mvn install:install-file -DgroupId=android -DartifactId=android -Dversion=2.1_r1 -Dpackaging=jar -Dfile=$ANDROID_HOME/platforms/android-7/android.jar
 
+noch ein tip:
+
+ - ab dem zweiten build, wenn alle dependencies da sind macht -o das bauen u.U. viel schneller
+
+ - ggf. javaOpts="-Xmx384M" in $ANDROID_HOME/platform-4/tools/dx setzen, wenn out of memory fehler kommen
+
+
 -->
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.telekommunisten.dialstation</groupId>
@@ -65,7 +72,7 @@ mvn install:install-file -DgroupId=android -DartifactId=android -Dversion=2.1_r1
                 <configuration>
                     <sdk>
                         <path>${env.ANDROID_HOME}</path>
-                        <platform>7</platform>
+                        <platform>4</platform>
                     </sdk>
                     <deleteConflictingFiles>true</deleteConflictingFiles>
                 </configuration>
