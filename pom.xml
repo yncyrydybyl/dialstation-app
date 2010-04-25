@@ -13,6 +13,13 @@ mvn -o install:install-file -DgroupId=android -DartifactId=android -Dversion=1.6
 mvn -o install:install-file -DgroupId=android -DartifactId=android -Dversion=2.0.1_r1 -Dpackaging=jar -Dfile=$ANDROID_HOME/platforms/android-6/android.jar
 mvn -o install:install-file -DgroupId=android -DartifactId=android -Dversion=2.1_r1 -Dpackaging=jar -Dfile=$ANDROID_HOME/platforms/android-7/android.jar
 
+Jetzt noch das RESTProvider-Artefact aus ./lib installieren:
+curl http://github.com/novoda/RESTProvider/raw/master/RESTProvider/pom.xml  > rest.pom
+
+mvn -o install:install-file -DgroupId=novoda.rest -DartifactId=RESTProvider -Dversion=0.0.1-SNAPSHOT -Dpackaging=jar -Dfile=./lib/RESTProvider-0.0.1-SNAPSHOT.jar -DpomFile=rest.pom
+
+
+
 noch ein tip:
 
  - ab dem zweiten build, wenn alle dependencies da sind macht -o das bauen u.U. viel schneller
