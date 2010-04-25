@@ -22,6 +22,7 @@ public class ListPdn extends ListActivity {
 	    
 	    private Cursor cursor;
 		private String force = "";
+		private String tag = "ListPdn";
 
 		/** Called when the activity is first created. */
 	
@@ -33,16 +34,13 @@ public class ListPdn extends ListActivity {
 		}
 	    @Override
 	    public void onCreate(Bundle savedInstanceState) {
-	    	
 	        super.onCreate(savedInstanceState);
-	         
-	        
-	        
 	    }
 
 	    @Override
 	    protected void onStart() {
 	    	// TODO Auto-generated method stub
+	    	Log.d(tag,"onstart");
 	    	super.onStart();
 	    	if (PreferenceManager.getDefaultSharedPreferences(this).getString("dialstation_user_path", null) == null)
 	    	{
@@ -53,9 +51,10 @@ public class ListPdn extends ListActivity {
 	    		if (force.contains("!!!!!!!!!!!!")) force = " AND DESTROY YOUR PHONE!";
 	    	}
 	    	else {
-	    		Log.d("ds","really provider called");
-		    	cursor = getContentResolver().query(Uri.parse("content://com.dialstation"), new String[] {"pdns"},null,null,null);
-		    	Log.d("ds","cols: "+cursor.getColumnCount());
+	    		Log.d(tag,"really provider called");
+		    	cursor = getContentResolver().query(Uri.parse("content://com.dialstation"), new String[]{"pdns"},null,null,null);
+		    	//Log.d(tag,"cols.....: "+cursor.getColumnCount());
+		    	Log.d(tag,"nooooclomun");
 
 		    	setListAdapter(new BaseAdapter() {
 					

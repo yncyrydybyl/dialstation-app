@@ -31,7 +31,8 @@ public class DialstationProvider extends RESTProvider {
 	private static String username = "t";
 	private static String password = "123";
 	private static Boolean readytogo = false;
-	private static String dialstation_user_path = "1"; // availible via DialstationUrl/whoami.json 
+	 // availible via DialstationUrl/whoami.json 
+	private String tag = "dialstation";
 	@Override
 	
 	public boolean onCreate() {
@@ -40,50 +41,20 @@ public class DialstationProvider extends RESTProvider {
 	}
 	
 	@Override
-	public HttpUriRequest queryRequest(Uri arg0, String[] arg1, String arg2,
+	public HttpUriRequest queryRequest(Uri resourcename, String[] projection, String arg2,
 			String[] arg3, String arg4) {
 
 		
-		Log.d(TAG, "sind wir drin? !!!!!!!!!!!!!!!!!!!!!");
+		Log.d(tag , "sind wir drin? !!!!!!!!!!!!!!!!!!!!!");
 		
 		SharedPreferences pm = PreferenceManager.getDefaultSharedPreferences(getContext());
 
 		httpClient.getCredentialsProvider().setCredentials(
 				new AuthScope(null, -1),
-				new UsernamePasswordCredentials(pm.getString("dialstation_user_name", ""), pm.getString("dialstation_user_password", "")));
+				new UsernamePasswordCredentials(pm.getString("dialstation_user", ""), pm.getString("dialstation_user_password", "")));
+		Log.d(tag,"USER+PASS:"+pm.getString("dialstation_user", "")+pm.getString("dialstation_user_password", ""));
 		
-		
-		//if (pm.getString("dialstation_user", null) != null){
-		dialstation_user_path = pm.getString("dialstation_user_path", null);
-		//}
-		
-		if(dialstation_user_path == null)
-		{
-			
-			try {
-				dialstation_user_path = new BufferedReader(new InputStreamReader(httpClient.execute(new HttpGet(DialstationUrl+"/whoami")).getEntity().getContent())).readLine();
-				if (dialstation_user_path.contains("HTTP Basic: Access denied")){
-					Toast.makeText(getContext(), getContext().getString(R.string.access_denied),2000).show();
-				}
-				else {
-					pm.edit().putString("dialstation_user_path", dialstation_user_path).commit();
-					
-				}
-			} catch (IllegalStateException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (ClientProtocolException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-		}
-
-		
-		HttpGet get = new HttpGet(dialstation_user_path+"/pdns.json");
+		HttpGet get = new HttpGet(pm.getString("dialstation_user_path", "")+"/pdns.json");
 		
 		
 		try {
