@@ -2,3 +2,7 @@ bin/*
 gen/*
 .classpath
 .project
+target/*
+dialstation.iml
+dialstation.ipr
+dialstation.iws
