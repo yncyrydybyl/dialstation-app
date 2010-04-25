@@ -15,34 +15,77 @@ import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.content.ContentValues;
+import android.content.SharedPreferences;
 import android.database.AbstractCursor;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.util.Log;
+import android.widget.Toast;
 import novoda.rest.RESTProvider;
 import novoda.rest.cursors.json.JsonCursor;
 
 
 
 public class DialstationProvider extends RESTProvider {
-	private static String DialstationUrl = "http://10.0.2.2:3000";
+	public static String DialstationUrl = "http://10.0.2.2:3000";
 	private static String username = "t";
 	private static String password = "123";
-	private static String dialstation_user_id = "1"; 
+	private static Boolean readytogo = false;
+	private static String dialstation_user_path = "1"; // availible via DialstationUrl/whoami.json 
 	@Override
 	
 	public boolean onCreate() {
-		 
-		httpClient.getCredentialsProvider().setCredentials(
-				new AuthScope(null, -1),
-				new UsernamePasswordCredentials(username, password));
-		return true;
-		}
+		
+		return super.onCreate();
+	}
 	
 	@Override
 	public HttpUriRequest queryRequest(Uri arg0, String[] arg1, String arg2,
 			String[] arg3, String arg4) {
+
+		
 		Log.d(TAG, "sind wir drin? !!!!!!!!!!!!!!!!!!!!!");
-		HttpGet get = new HttpGet(DialstationUrl+"/users/1/pdns.json");
+		
+		SharedPreferences pm = PreferenceManager.getDefaultSharedPreferences(getContext());
+
+		httpClient.getCredentialsProvider().setCredentials(
+				new AuthScope(null, -1),
+				new UsernamePasswordCredentials(pm.getString("dialstation_user_name", ""), pm.getString("dialstation_user_password", "")));
+		
+		
+		//if (pm.getString("dialstation_user", null) != null){
+		dialstation_user_path = pm.getString("dialstation_user_path", null);
+		//}
+		
+		if(dialstation_user_path == null)
+		{
+			
+			try {
+				dialstation_user_path = new BufferedReader(new InputStreamReader(httpClient.execute(new HttpGet(DialstationUrl+"/whoami")).getEntity().getContent())).readLine();
+				if (dialstation_user_path.contains("HTTP Basic: Access denied")){
+					Toast.makeText(getContext(), getContext().getString(R.string.access_denied),2000).show();
+				}
+				else {
+					pm.edit().putString("dialstation_user_path", dialstation_user_path).commit();
+					
+				}
+			} catch (IllegalStateException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ClientProtocolException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
+
+		
+		HttpGet get = new HttpGet(dialstation_user_path+"/pdns.json");
+		
+		
 		try {
 			Log.d(TAG, "sind wir draussen? !!!!!!!!!!!!!!!!!!!!!" +  new BufferedReader(new InputStreamReader(httpClient.execute(get).getEntity().getContent())).readLine());
 		} catch (ClientProtocolException e) {

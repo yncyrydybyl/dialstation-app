@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">myApp</string>
+    <string name="app_name">dialstation</string>
     
     <string name="settings_title">title</string>
+    <string name="dialstation_user_path">user path</string>
+    <string name="dialstation_user">user</string>
+    <string name="dialstation_user_password">password</string>
+    <string name="access_denied">access kaputt</string>
     <string name="settings_dialog">dialog</string>
     <string name="settings_on">on</string>
     <string name="settings_off">off</string>
     
     <string name="search_hint">Where to beam today?</string>
+    
     <string name="search_label">Station, Address, Name,..</string>
     <string name="search_settings_description">Places to beam..</string>
     
