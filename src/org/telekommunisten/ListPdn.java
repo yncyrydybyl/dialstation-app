@@ -56,8 +56,8 @@ public class ListPdn extends ListActivity {
 	    		Log.d("ds","really provider called");
 		    	cursor = getContentResolver().query(Uri.parse("content://com.dialstation"), new String[] {"pdns"},null,null,null);
 		    	Log.d("ds","cols: "+cursor.getColumnCount());
-		    	if (cursor.getColumnCount() != 2)
-		        setListAdapter(new BaseAdapter() {
+
+		    	setListAdapter(new BaseAdapter() {
 					
 					@Override
 					public View getView(int position, View convertView, ViewGroup parent) {

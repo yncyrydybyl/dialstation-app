@@ -35,7 +35,7 @@ public class SettingsActivity extends PreferenceActivity {
 
         EditTextPreference path = (EditTextPreference) findPreference("dialstation_user_path");
         EditTextPreference user = (EditTextPreference) findPreference("dialstation_user");
-        EditTextPreference pass = (EditTextPreference) findPreference("dialstation_user_path");
+        EditTextPreference pass = (EditTextPreference) findPreference("dialstation_user_password");
         path.setSummary(prefs.getString("dialstation_user_path", "0"));
         user.setSummary(prefs.getString("dialstation_user", "0"));
 
@@ -49,8 +49,8 @@ public class SettingsActivity extends PreferenceActivity {
         pass.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
             public boolean onPreferenceChange(Preference preference, Object pass) {
                 preference.setSummary((String) pass);
-                prefs.edit().putString("dialstation_user", (String) pass).commit();
-                return validateAccess(prefs.getString("dialstation_user_password", null), ""+pass);
+                prefs.edit().putString("dialstation_user_pasword", (String) pass).commit();
+                return validateAccess(prefs.getString("dialstation_user", null), ""+pass);
             }
         });
 
@@ -59,7 +59,7 @@ public class SettingsActivity extends PreferenceActivity {
 
     	// NOT VALID - no values within the prefmanager settings
     	if (user == null || pass == null) {
-    		Toast.makeText(this, "NOT VALID - no values within the prefmanager settings", Toast.LENGTH_LONG);
+    		Toast.makeText(this, "NOT VALID - no values within the prefmanager settings", Toast.LENGTH_LONG).show();
     		return false;
     	}
     	
@@ -92,10 +92,11 @@ public class SettingsActivity extends PreferenceActivity {
 		// NOT VALID - dialstation-server-capability answers with a access violation
 		
 		if (whoami.contains("Access denied")) {
-			Toast.makeText(this, "NOT VALID - dialstation-server-capability answers with a access violation", Toast.LENGTH_LONG);
+			Toast.makeText(this, "NOT VALID - dialstation-server-capability answers with a access violation", Toast.LENGTH_LONG).show();
 			return false;
 		}
-		Toast.makeText(this, "drinne!  :-)", Toast.LENGTH_LONG);
+		Toast.makeText(this, "drinne!  :-)", Toast.LENGTH_LONG).show()
+		;
 		prefs.edit().putString("dialstation_user_path", whoami).commit();
 		return true;
     }
