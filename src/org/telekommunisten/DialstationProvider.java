@@ -24,7 +24,7 @@ import novoda.rest.cursors.json.JsonCursor;
 
 
 public class DialstationProvider extends RESTProvider {
-	private static String DialstationUrl = "http://10.0.2.2:3000";
+	private static String DialstationUrl = "http://42.42.42.179:3000";
 	private static String username = "t";
 	private static String password = "123";
 	private static String dialstation_user_id = "1"; 
