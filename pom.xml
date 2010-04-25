@@ -8,10 +8,10 @@ $ANDROID_HOME auf den sdk path setzen
 $JAVA_HOME setzen
 $M2_HOME auf das ausgepackte maven2 setzen 
 
-mvn install:install-file -DgroupId=android -DartifactId=android -Dversion=1.5_r3 -Dpackaging=jar -Dfile=$ANDROID_HOME/platforms/android-3/android.jar
-mvn install:install-file -DgroupId=android -DartifactId=android -Dversion=1.6_r2 -Dpackaging=jar -Dfile=$ANDROID_HOME/platforms/android-4/android.jar
-mvn install:install-file -DgroupId=android -DartifactId=android -Dversion=2.0.1_r1 -Dpackaging=jar -Dfile=$ANDROID_HOME/platforms/android-6/android.jar
-mvn install:install-file -DgroupId=android -DartifactId=android -Dversion=2.1_r1 -Dpackaging=jar -Dfile=$ANDROID_HOME/platforms/android-7/android.jar
+mvn -o install:install-file -DgroupId=android -DartifactId=android -Dversion=1.5_r3 -Dpackaging=jar -Dfile=$ANDROID_HOME/platforms/android-3/android.jar
+mvn -o install:install-file -DgroupId=android -DartifactId=android -Dversion=1.6_r2 -Dpackaging=jar -Dfile=$ANDROID_HOME/platforms/android-4/android.jar
+mvn -o install:install-file -DgroupId=android -DartifactId=android -Dversion=2.0.1_r1 -Dpackaging=jar -Dfile=$ANDROID_HOME/platforms/android-6/android.jar
+mvn -o install:install-file -DgroupId=android -DartifactId=android -Dversion=2.1_r1 -Dpackaging=jar -Dfile=$ANDROID_HOME/platforms/android-7/android.jar
 
 noch ein tip:
 
