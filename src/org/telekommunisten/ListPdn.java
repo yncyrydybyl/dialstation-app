@@ -37,7 +37,7 @@ public class ListPdn extends ListActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        final Cursor cursor = getContentResolver().query(Uri.parse("content://com.dialstation"), new String[]{"pdns"}, null, null, null);
+        final Cursor cursor = getContentResolver().query(Uri.parse("content://com.dialstation"), null, null, null, null);
 
         setListAdapter(new BaseAdapter() {
 
