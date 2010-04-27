@@ -73,8 +73,8 @@ public class ListPdn extends ListActivity {
 						} 
 						
 						cursor.moveToPosition(position);
-						((TextView) convertView.findViewById(android.R.id.text1)).setText(cursor.getString(6));
-						((TextView) convertView.findViewById(android.R.id.text2)).setText(cursor.getString(1));
+						((TextView) convertView.findViewById(android.R.id.text1)).setText(cursor.getString(cursor.getColumnIndex("pstn_number")));
+						((TextView) convertView.findViewById(android.R.id.text2)).setText(cursor.getString(cursor.getColumnIndex("description")));
 
 						((TextView) convertView.findViewById(android.R.id.text1)).setTextColor(Color.GREEN);
 						((TextView) convertView.findViewById(android.R.id.text2)).setTextColor(Color.RED);
