@@ -29,14 +29,16 @@ public class SettingsActivity extends PreferenceActivity {
 
     private SharedPreferences prefs;
 
-    /** Called when the activity is first created. */
+    /**
+     * Called when the activity is first created.
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        
+
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.settings);
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        
+
 
         EditTextPreference path = (EditTextPreference) findPreference("dialstation_user_path");
         EditTextPreference user = (EditTextPreference) findPreference("dialstation_user");
@@ -46,87 +48,86 @@ public class SettingsActivity extends PreferenceActivity {
 
         user.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
             public boolean onPreferenceChange(Preference preference, Object user) {
-            	preference.setSummary((String) user);
-            	prefs.edit().putString("dialstation_user", (String) user).commit();
-            	return validateAccess(""+user, prefs.getString("dialstation_user_password", null));
+                preference.setSummary((String) user);
+                prefs.edit().putString("dialstation_user", (String) user).commit();
+                return validateAccess("" + user, prefs.getString("dialstation_user_password", null));
             }
         });
         pass.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
             public boolean onPreferenceChange(Preference preference, Object pass) {
                 preference.setSummary((String) pass);
                 prefs.edit().putString("dialstation_user_pasword", (String) pass).commit();
-                return validateAccess(prefs.getString("dialstation_user", null), ""+pass);
+                return validateAccess(prefs.getString("dialstation_user", null), "" + pass);
             }
         });
 
     }
-    public boolean validateAccess(String user, String pass){
 
-    	// NOT VALID - no values within the prefmanager settings
-    	if (user == null || pass == null) {
-    		Toast.makeText(this, "NOT VALID - no values within the prefmanager settings", Toast.LENGTH_LONG).show();
-    		return false;
-    	}
-    	
-    	//DefaultHttpClient httpClient = new DefaultHttpClient();
-    	DefaultHttpClient httpClient = (DefaultHttpClient) DialstationProvider.getHttpClient();
-		
-        TrustAllSSLSocketFactory tasslf = null;
-		try {
-			tasslf = new TrustAllSSLSocketFactory();
-		} catch (KeyManagementException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (NoSuchAlgorithmException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (KeyStoreException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (UnrecoverableKeyException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-        Scheme sch = new Scheme("https", tasslf, 443);
-        httpClient.getConnectionManager().getSchemeRegistry().register(sch);     
-    
+    public boolean validateAccess(String user, String pass) {
 
-    	
-    	
-    	httpClient.getCredentialsProvider().setCredentials(
-				new AuthScope(null, -1),
-				new UsernamePasswordCredentials(user,pass));
-		String whoami = null;
-		try {
-			whoami = new BufferedReader(
-					new InputStreamReader(
-							httpClient.execute(
-									new HttpGet(DialstationProvider.DialstationUrl+"/whoami")
-									).getEntity().getContent())).readLine();
-			
-			
-			
-		} catch (IllegalStateException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ClientProtocolException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		// NOT VALID - dialstation-server-capability answers with a access violation
-		
-		if (whoami.contains("Access denied")) {
-			Toast.makeText(this, "NOT VALID - dialstation-server-capability answers with a access violation", Toast.LENGTH_LONG).show();
-			return false;
-		}
-		Toast.makeText(this, "drinne!  :-)", Toast.LENGTH_LONG).show()
-		;
-		prefs.edit().putString("dialstation_user_path", whoami).commit();
-		return true;
+        // NOT VALID - no values within the prefmanager settings
+        if (user == null || pass == null) {
+            Toast.makeText(this, "NOT VALID - no values within the prefmanager settings", Toast.LENGTH_LONG).show();
+            return false;
+        }
+
+        //DefaultHttpClient httpClient = new DefaultHttpClient();
+        DefaultHttpClient httpClient = (DefaultHttpClient) DialstationProvider.getHttpClient();
+//
+//        TrustAllSSLSocketFactory tasslf = null;
+//		try {
+//			tasslf = new TrustAllSSLSocketFactory();
+//		} catch (KeyManagementException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		} catch (NoSuchAlgorithmException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		} catch (KeyStoreException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		} catch (UnrecoverableKeyException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		}
+//        Scheme sch = new Scheme("https", tasslf, 443);
+//        httpClient.getConnectionManager().getSchemeRegistry().register(sch);
+//
+
+
+        httpClient.getCredentialsProvider().setCredentials(
+                new AuthScope(null, -1),
+                new UsernamePasswordCredentials(user, pass));
+        String whoami = null;
+        try {
+            whoami = new BufferedReader(
+                    new InputStreamReader(
+                            httpClient.execute(
+                                    new HttpGet(DialstationProvider.DialstationUrl + "/whoami")
+                            ).getEntity().getContent())).readLine();
+
+
+        } catch (IllegalStateException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (ClientProtocolException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        // NOT VALID - dialstation-server-capability answers with a access violation
+
+        if (whoami.contains("Access denied")) {
+            Toast.makeText(this, "NOT VALID - dialstation-server-capability answers with a access violation", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        Toast.makeText(this, "drinne!  :-)", Toast.LENGTH_LONG).show()
+                ;
+        prefs.edit().putString("dialstation_user_path", whoami).commit();
+        return true;
     }
 
 }
