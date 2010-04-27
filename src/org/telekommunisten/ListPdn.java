@@ -69,13 +69,17 @@ public class ListPdn extends ListActivity {
 					@Override
 					public View getView(int position, View convertView, ViewGroup parent) {
 						if (convertView == null) {
-							convertView = new TextView(ListPdn.this);						
+							convertView = getLayoutInflater().inflate(android.R.layout.simple_list_item_2, null);				
 						} 
 						
 						cursor.moveToPosition(position);
-						((TextView) convertView).setText(cursor.getString(1));
-						((TextView) convertView).setTextSize(42);
-						((TextView) convertView).setTextColor(Color.GREEN);
+						((TextView) convertView.findViewById(android.R.id.text1)).setText(cursor.getString(6));
+						((TextView) convertView.findViewById(android.R.id.text2)).setText(cursor.getString(1));
+
+						((TextView) convertView.findViewById(android.R.id.text1)).setTextColor(Color.GREEN);
+						((TextView) convertView.findViewById(android.R.id.text2)).setTextColor(Color.RED);
+//						((TextView) convertView).setTextSize(42);
+//						((TextView) convertView).setTextColor(Color.GREEN);
 						return convertView;
 					}
 					
