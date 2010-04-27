@@ -4,11 +4,16 @@ package org.telekommunisten;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.UnrecoverableKeyException;
 
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.content.SharedPreferences;
@@ -63,7 +68,30 @@ public class SettingsActivity extends PreferenceActivity {
     		return false;
     	}
     	
-    	DefaultHttpClient httpClient = new DefaultHttpClient();
+    	//DefaultHttpClient httpClient = new DefaultHttpClient();
+    	DefaultHttpClient httpClient = (DefaultHttpClient) DialstationProvider.getHttpClient();
+		
+        TrustAllSSLSocketFactory tasslf = null;
+		try {
+			tasslf = new TrustAllSSLSocketFactory();
+		} catch (KeyManagementException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (NoSuchAlgorithmException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (KeyStoreException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (UnrecoverableKeyException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+        Scheme sch = new Scheme("https", tasslf, 443);
+        httpClient.getConnectionManager().getSchemeRegistry().register(sch);     
+    
+
+    	
     	
     	httpClient.getCredentialsProvider().setCredentials(
 				new AuthScope(null, -1),
