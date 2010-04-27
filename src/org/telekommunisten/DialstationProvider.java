@@ -107,7 +107,8 @@ public class DialstationProvider extends RESTProvider {
 //			
 
 
-        Log.d(tag, "USER+PASS:" + pm.getString("dialstation_user", "") + pm.getString("dialstation_user_password", ""));
+//        Log.d(tag, "USER+PASS:" + pm.getString("dialstation_user", "") + pm.getString("dialstation_user_password", ""));
+        Log.d(tag, "USER:" + pm.getString("dialstation_user", ""));
 
         HttpGet get = new HttpGet(pm.getString("dialstation_user_path", "") + "/pdns.json");
 
