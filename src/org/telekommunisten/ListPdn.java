@@ -57,24 +57,28 @@ public class ListPdn extends ListActivity {
 		}
 		else {
 			Log.d(tag,"really provider called");
-			cursor = getContentResolver().query(Uri.parse("content://com.dialstation"), null, null, null, null);
+			if (cursor == null) {
+				cursor = getContentResolver().query(Uri.parse("content://com.dialstation"), null, null, null, null);
+				Log.d(tag,"no cursor found. loading data");
+			}
 			//Log.d(tag,"cols.....: "+cursor.getColumnCount());
-			Log.d(tag,"nooooclomun");
+			
 
 			setListAdapter(new BaseAdapter() {
 
 				@Override
 				public View getView(int position, View convertView, ViewGroup parent) {
 					if (convertView == null) {
-						convertView = getLayoutInflater().inflate(android.R.layout.simple_list_item_2, null);				
+						convertView = getLayoutInflater().inflate(R.layout.pdn, null);				
 					} 
 
 					cursor.moveToPosition(position);
-					((TextView) convertView.findViewById(android.R.id.text1)).setText(cursor.getString(cursor.getColumnIndex("pstn_number")));
-					((TextView) convertView.findViewById(android.R.id.text2)).setText(cursor.getString(cursor.getColumnIndex("description")));
+					((TextView) convertView.findViewById(R.id.pstn)).setText(cursor.getString(cursor.getColumnIndex("pstn_number")));
+					((TextView) convertView.findViewById(R.id.description)).setText(cursor.getString(cursor.getColumnIndex("description")));
+					((TextView) convertView.findViewById(R.id.destination)).setText(cursor.getString(cursor.getColumnIndex("destination")));
 
-					((TextView) convertView.findViewById(android.R.id.text1)).setTextColor(Color.GREEN);
-					((TextView) convertView.findViewById(android.R.id.text2)).setTextColor(Color.RED);
+					((TextView) convertView.findViewById(R.id.pstn)).setTextColor(Color.GREEN);
+					((TextView) convertView.findViewById(R.id.description)).setTextColor(Color.RED);
 					//						((TextView) convertView).setTextSize(42);
 					//						((TextView) convertView).setTextColor(Color.GREEN);
 					return convertView;

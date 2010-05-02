@@ -40,10 +40,10 @@ public class SettingsActivity extends PreferenceActivity {
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
 
-        EditTextPreference path = (EditTextPreference) findPreference("dialstation_user_path");
+        
         EditTextPreference user = (EditTextPreference) findPreference("dialstation_user");
         EditTextPreference pass = (EditTextPreference) findPreference("dialstation_user_password");
-        path.setSummary(prefs.getString("dialstation_user_path", "0"));
+        
         user.setSummary(prefs.getString("dialstation_user", "0"));
 
         user.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
@@ -55,8 +55,11 @@ public class SettingsActivity extends PreferenceActivity {
         });
         pass.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
             public boolean onPreferenceChange(Preference preference, Object pass) {
-                preference.setSummary((String) pass);
-                prefs.edit().putString("dialstation_user_pasword", (String) pass).commit();
+            	String shadowpass;
+            	for (shadowpass="";shadowpass.length()<pass.toString().length();shadowpass+="*");
+            	
+                preference.setSummary((String) shadowpass);
+                prefs.edit().putString("dialstation_user_password", (String) pass).commit();
                 return validateAccess(prefs.getString("dialstation_user", null), "" + pass);
             }
         });
@@ -73,27 +76,6 @@ public class SettingsActivity extends PreferenceActivity {
 
         //DefaultHttpClient httpClient = new DefaultHttpClient();
         DefaultHttpClient httpClient = (DefaultHttpClient) DialstationProvider.getHttpClient();
-//
-//        TrustAllSSLSocketFactory tasslf = null;
-//		try {
-//			tasslf = new TrustAllSSLSocketFactory();
-//		} catch (KeyManagementException e1) {
-//			// TODO Auto-generated catch block
-//			e1.printStackTrace();
-//		} catch (NoSuchAlgorithmException e1) {
-//			// TODO Auto-generated catch block
-//			e1.printStackTrace();
-//		} catch (KeyStoreException e1) {
-//			// TODO Auto-generated catch block
-//			e1.printStackTrace();
-//		} catch (UnrecoverableKeyException e1) {
-//			// TODO Auto-generated catch block
-//			e1.printStackTrace();
-//		}
-//        Scheme sch = new Scheme("https", tasslf, 443);
-//        httpClient.getConnectionManager().getSchemeRegistry().register(sch);
-//
-
 
         httpClient.getCredentialsProvider().setCredentials(
                 new AuthScope(null, -1),
@@ -124,9 +106,9 @@ public class SettingsActivity extends PreferenceActivity {
             Toast.makeText(this, "NOT VALID - dialstation-server-capability answers with a access violation", Toast.LENGTH_LONG).show();
             return false;
         }
-        Toast.makeText(this, "drinne!  :-)", Toast.LENGTH_LONG).show()
-                ;
+        Toast.makeText(this, "drinne!  :-)", Toast.LENGTH_LONG).show();
         prefs.edit().putString("dialstation_user_path", whoami).commit();
+        finish();
         return true;
     }
 

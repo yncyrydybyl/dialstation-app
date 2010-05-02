@@ -2,18 +2,17 @@
 <resources>
 
     <string name="app_name">Dialstation</string>
-    <string name="settings_title">telniks choice</string>
+
     <string name="dialstation_user_path">restful user path</string>
     <string name="dialstation_user">user</string>
     <string name="dialstation_user_password">password</string>
 
     <string name="access_denied">access kaputt</string>
     <string name="settings_dialog">dialog</string>
-    <string name="settings_on">on</string>
-    <string name="settings_off">off</string>
+
     
     <string name="search_hint">Where to call today?</string>
-    
+    <string name="about">About</string>
     <string name="search_label">Name,..</string>
     <string name="search_settings_description">People to call.</string>
     

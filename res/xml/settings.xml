@@ -2,12 +2,6 @@
 	xmlns:android="http://schemas.android.com/apk/res/android">
 	
 	<PreferenceCategory android:title="Settings">
-	
-		<EditTextPreference
-		android:key="dialstation_user_path"
-		android:title="@string/dialstation_user_path"
-		android:dialogTitle="@string/settings_dialog"
-		/> 
 
 		<EditTextPreference
 		android:key="dialstation_user"
@@ -21,12 +15,7 @@
 		android:dialogTitle="@string/dialstation_user_password"
 		android:password="true"
 		/> 
-		<CheckBoxPreference
-			android:key="other"
-			android:title="@string/settings_title"
-			android:summaryOn="@string/settings_on"
-			android:summaryOff="@string/settings_off"
-		/>	
+
 
 	</PreferenceCategory>
 </PreferenceScreen>  
