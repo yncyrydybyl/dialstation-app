@@ -1,3 +1,4 @@
+// released by t, flo, biafra into the public domain
 package org.telekommunisten;
 
 import android.app.Activity;
@@ -21,18 +22,17 @@ import android.widget.Toast;
 
 public class ListPdn extends ListActivity {
 
-	private Cursor cursor;
+	private static Cursor cursor;
 	private String force = "";
 	private String tag = "ListPdn";
+	
 
 	/**
 	 * Called when the activity is first created.
 	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-
-        
+		super.onCreate(savedInstanceState);   
 	}
 
 	@Override
@@ -47,6 +47,7 @@ public class ListPdn extends ListActivity {
 		// TODO Auto-generated method stub
 		Log.d(tag,"onstart");
 		super.onStart();
+		
 		if (PreferenceManager.getDefaultSharedPreferences(this).getString("dialstation_user_path", null) == null)
 		{
 			startActivity(new Intent(this,SettingsActivity.class));
@@ -89,12 +90,10 @@ public class ListPdn extends ListActivity {
 					cursor.moveToPosition(position);
 					return Long.valueOf(cursor.getString(cursor.getColumnIndex("id")));
 
-					// TODO Auto-generated method stub
 				}
 
 				@Override
 				public Object getItem(int position) {
-					// TODO Auto-generated method stub
 					cursor.moveToPosition(position);
 					PDN pdn = new PDN(
 							cursor.getString(cursor.getColumnIndex("pstn_number")),
@@ -105,7 +104,6 @@ public class ListPdn extends ListActivity {
 
 				@Override
 				public int getCount() {
-					// TODO Auto-generated method stub
 					Log.d("ListPdn",cursor.getCount()+"<- cursor.length");
 					return cursor.getCount();
 				}
@@ -124,20 +122,20 @@ public class ListPdn extends ListActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 
-		case R.id.search:
-			onSearchRequested();
+		case R.id.about:
+			startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("http://dialstation.com/FAQ_en")));
 			break;
 
 		case R.id.settings:
 			startActivity(new Intent(this, SettingsActivity.class));
 			break;
 		case R.id.feedback:
-			LogCollector.feedback(this, "flo@andlabs.de", "blah blah blah");
+			LogCollector.feedback(this, getString(R.string.feedback_email), getString(R.string.feedback_subject));
 			break;
 		}
 		return super.onOptionsItemSelected(item);
 	}
-
+	
 }
 
 
