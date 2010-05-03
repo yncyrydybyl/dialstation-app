@@ -28,4 +28,9 @@ public class Constants {
      */
     public static final String AUTHTOKEN_TYPE = "com.dialstation";
 
+    /**
+     * Contacts dataKind mime type string.
+     */
+    public static final String MIMETYPE = "vnd.android.cursor.item/vnd.dialstation";
+
 }

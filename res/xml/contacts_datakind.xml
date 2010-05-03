@@ -21,7 +21,7 @@
 
     <ContactsDataKind
         android:mimeType="vnd.android.cursor.item/vnd.dialstation"
-        android:icon="@drawable/dialstationlauncher"
+        android:icon="@drawable/sternkleinrot"
         android:summaryColumn="data2"
         android:detailColumn="data3"
         android:detailSocialSummary="true" />
