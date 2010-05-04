@@ -66,44 +66,46 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         Log.d(TAG, "performing dialstation SYNC");
         
         Cursor pdns = getContext().getContentResolver().query(Uri.parse("content://com.dialstation"), null, null, null, null);
-        
-        try {
-            ArrayList<ContentProviderOperation> ops = new ArrayList<ContentProviderOperation>();
-            while (pdns.moveToNext()) {
-                
-                // check if this contact is already stored offline in ContactsProvider
-                Cursor c = getContext().getContentResolver().query(RawContacts.CONTENT_URI,
-                        new String[]{RawContacts._ID}, 
-                        RawContacts.SOURCE_ID + "=?",
-                        new String[]{pdns.getString(pdns.getColumnIndex("id"))}, null);
-                // if not
-                if (c.getCount() == 0) {
-                    // insert new contact
-                    int rawContactInsertIndex = ops.size();
-                    ops.add(ContentProviderOperation.newInsert(RawContacts.CONTENT_URI)
-                            .withValue(RawContacts.ACCOUNT_TYPE, account.type)
-                            .withValue(RawContacts.ACCOUNT_NAME, account.name)
-                            .withValue(RawContacts.SOURCE_ID, pdns.getString(pdns.getColumnIndex("id")))
-                            .build());
-                    ops.add(ContentProviderOperation.newInsert(Data.CONTENT_URI)
-                            .withValueBackReference(Data.RAW_CONTACT_ID, rawContactInsertIndex)
-                            .withValue(Data.MIMETYPE, StructuredName.CONTENT_ITEM_TYPE)
-                            .withValue(StructuredName.DISPLAY_NAME, pdns.getString(pdns.getColumnIndex("description")))
-                            .build());
-                    ops.add(ContentProviderOperation.newInsert(Data.CONTENT_URI)
-                            .withValueBackReference(Data.RAW_CONTACT_ID, rawContactInsertIndex)
-                            .withValue(Data.MIMETYPE, Phone.CONTENT_ITEM_TYPE)
-                            .withValue(Phone.NUMBER, pdns.getString(pdns.getColumnIndex("destination")))
-                            .build());
-                    ops.add(ContentProviderOperation.newInsert(Data.CONTENT_URI)
-                            .withValueBackReference(Data.RAW_CONTACT_ID, rawContactInsertIndex)
-                            .withValue(Data.MIMETYPE, Constants.MIMETYPE)
-                            .withValue(Data.DATA1, pdns.getString(pdns.getColumnIndex("pstn_number")))
-                            .withValue(Data.DATA2, "23 ct/min  (:-P telco!)")
-                            .withValue(Data.DATA3, "pdn: "+pdns.getString(pdns.getColumnIndex("id")))
-                            .build());
-                }
+
+        ArrayList<ContentProviderOperation> ops = new ArrayList<ContentProviderOperation>();
+        while (pdns.moveToNext()) {
+
+            // check if this contact is already stored offline in ContactsProvider
+            Cursor c = getContext().getContentResolver().query(RawContacts.CONTENT_URI,
+                    new String[]{RawContacts._ID}, 
+                    RawContacts.SOURCE_ID + "=?",
+                    new String[]{pdns.getString(pdns.getColumnIndex("id"))}, null);
+            // if not
+            if (c.getCount() == 0) {
+                // insert new dialstation rawcontact
+                int rawContactInsertIndex = ops.size();
+                ops.add(ContentProviderOperation.newInsert(RawContacts.CONTENT_URI)
+                        .withValue(RawContacts.ACCOUNT_TYPE, account.type)
+                        .withValue(RawContacts.ACCOUNT_NAME, account.name)
+                        .withValue(RawContacts.SOURCE_ID, pdns.getString(pdns.getColumnIndex("id")))
+                        .build());
+                ops.add(ContentProviderOperation.newInsert(Data.CONTENT_URI)
+                        .withValueBackReference(Data.RAW_CONTACT_ID, rawContactInsertIndex)
+                        .withValue(Data.MIMETYPE, StructuredName.CONTENT_ITEM_TYPE)
+                        .withValue(StructuredName.DISPLAY_NAME, pdns.getString(pdns.getColumnIndex("description")))
+                        .build());
+                ops.add(ContentProviderOperation.newInsert(Data.CONTENT_URI)
+                        .withValueBackReference(Data.RAW_CONTACT_ID, rawContactInsertIndex)
+                        .withValue(Data.MIMETYPE, Phone.CONTENT_ITEM_TYPE)
+                        .withValue(Phone.NUMBER, pdns.getString(pdns.getColumnIndex("destination")))
+                        .build());
+                ops.add(ContentProviderOperation.newInsert(Data.CONTENT_URI)
+                        .withValueBackReference(Data.RAW_CONTACT_ID, rawContactInsertIndex)
+                        .withValue(Data.MIMETYPE, Constants.MIMETYPE)
+                        .withValue(Data.DATA1, pdns.getString(pdns.getColumnIndex("pstn_number")))
+                        .withValue(Data.DATA2, "23 ct/min  (:-P telco!)")
+                        .withValue(Data.DATA3, "pdn: "+pdns.getString(pdns.getColumnIndex("pstn_number"))+" (festnetz bln)")
+                        .build());
+            } else {
+                // TODO update
             }
+        }
+        try {
             getContext().getContentResolver().applyBatch(ContactsContract.AUTHORITY, ops);
         } catch (RemoteException e) {
             // TODO Auto-generated catch block
@@ -112,6 +114,57 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+
+        
+        Cursor contacts = getContext().getContentResolver().query(Contacts.CONTENT_URI, 
+                                        new String[]{Contacts._ID, Contacts.DISPLAY_NAME}, 
+                                        null, null, null);
+        
+        ops.clear();
+        while (contacts.moveToNext()) {
+            
+            // check if this contact has already corresponding dialstation rawcontact
+            Cursor c = getContext().getContentResolver().query(RawContacts.CONTENT_URI,
+                    new String[]{RawContacts._ID}, 
+                    RawContacts.CONTACT_ID + "=? AND "+
+                    RawContacts.ACCOUNT_TYPE + "=? AND "+
+                    RawContacts.ACCOUNT_NAME + "=?",
+                    new String[]{contacts.getString(0), account.type, account.name}, null);
+            // if not
+            if (c.getCount() == 0) {
+                // insert new dialstation rawcontact
+                int rawContactInsertIndex = ops.size();
+                ops.add(ContentProviderOperation.newInsert(RawContacts.CONTENT_URI)
+                        .withValue(RawContacts.ACCOUNT_TYPE, account.type)
+                        .withValue(RawContacts.ACCOUNT_NAME, account.name)
+                        .build());
+                ops.add(ContentProviderOperation.newInsert(Data.CONTENT_URI)
+                        .withValueBackReference(Data.RAW_CONTACT_ID, rawContactInsertIndex)
+                        .withValue(Data.MIMETYPE, StructuredName.CONTENT_ITEM_TYPE)
+                        .withValue(StructuredName.DISPLAY_NAME, contacts.getString(1))
+                        .build());
+                ops.add(ContentProviderOperation.newInsert(Data.CONTENT_URI)
+                        .withValueBackReference(Data.RAW_CONTACT_ID, rawContactInsertIndex)
+                        .withValue(Data.MIMETYPE, Constants.MIMETYPE)
+                        .withValue(Data.DATA1, "0")
+                        .withValue(Data.DATA2, "check tarif..")
+                        .withValue(Data.DATA3, "(no pdn)")
+                        .build());
+            } else {
+                // TODO update
+            }
+        }
+        try {
+            getContext().getContentResolver().applyBatch(ContactsContract.AUTHORITY, ops);
+        } catch (RemoteException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (OperationApplicationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
+        
         
         
     }

@@ -3,6 +3,7 @@ package org.telekommunisten;
 
 import android.app.Activity;
 import android.app.ListActivity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -40,7 +41,10 @@ public class ListPdn extends ListActivity {
 		if (getIntent().getData() != null) {
 		    Cursor c = getContentResolver().query(getIntent().getData(), new String[]{Data._ID, Data.DATA1}, null, null, null);
 		    c.moveToFirst();
-		    startActivity(new Intent(Intent.ACTION_CALL,  Uri.parse("tel:+" + c.getString(1))));
+		    if (!c.getString(1).equals("0"))
+		        startActivity(new Intent(Intent.ACTION_CALL,  Uri.parse("tel:+" + c.getString(1))));
+		    else
+		        ProgressDialog.show(this, "checkking out tarifs..", "and associating psdn number \n \n ToDo :-)");
 		}
 	}
 
