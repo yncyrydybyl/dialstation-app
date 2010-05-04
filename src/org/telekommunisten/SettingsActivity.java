@@ -76,40 +76,40 @@ public class SettingsActivity extends PreferenceActivity {
         }
 
         //DefaultHttpClient httpClient = new DefaultHttpClient();
-//        DefaultHttpClient httpClient = (DefaultHttpClient) DialstationProvider.getHttpClient();
-//
-//        httpClient.getCredentialsProvider().setCredentials(
-//                new AuthScope(null, -1),
-//                new UsernamePasswordCredentials(user, pass));
-//        String whoami = null;
-//        try {
-//            whoami = new BufferedReader(
-//                    new InputStreamReader(
-//                            httpClient.execute(
-//                                    new HttpGet(DialstationProvider.DialstationUrl + "/whoami")
-//                            ).getEntity().getContent())).readLine();
-//
-//
-//        } catch (IllegalStateException e) {
-//            // TODO Auto-generated catch block
-//            e.printStackTrace();
-//        } catch (ClientProtocolException e) {
-//            // TODO Auto-generated catch block
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            // TODO Auto-generated catch block
-//            e.printStackTrace();
-//        }
-//
-//        // NOT VALID - dialstation-server-capability answers with a access violation
-//
-//        if (whoami.contains("Access denied")) {
-//            Toast.makeText(this, "NOT VALID - dialstation-server-capability answers with a access violation", Toast.LENGTH_LONG).show();
-//            return false;
-//        }
-//        Toast.makeText(this, "drinne!  :-)", Toast.LENGTH_LONG).show();
-//        prefs.edit().putString("dialstation_user_path", whoami).commit();
-//        finish();
+        DefaultHttpClient httpClient = (DefaultHttpClient) DialstationProvider.getHttpClient();
+
+        httpClient.getCredentialsProvider().setCredentials(
+                new AuthScope(null, -1),
+                new UsernamePasswordCredentials(user, pass));
+        String whoami = null;
+        try {
+            whoami = new BufferedReader(
+                    new InputStreamReader(
+                            httpClient.execute(
+                                    new HttpGet(DialstationProvider.DialstationUrl + "/whoami")
+                            ).getEntity().getContent())).readLine();
+
+
+        } catch (IllegalStateException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (ClientProtocolException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        // NOT VALID - dialstation-server-capability answers with a access violation
+
+        if (whoami.contains("Access denied")) {
+            Toast.makeText(this, "NOT VALID - dialstation-server-capability answers with a access violation", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        Toast.makeText(this, "drinne!  :-)", Toast.LENGTH_LONG).show();
+        prefs.edit().putString("dialstation_user_path", whoami).commit();
+        finish();
         return true;
     }
 

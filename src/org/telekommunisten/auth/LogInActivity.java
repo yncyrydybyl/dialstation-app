@@ -132,7 +132,6 @@ public class LogInActivity extends AccountAuthenticatorActivity {
                         if (CREATE) {
                             Log.i(TAG, "NEW Account");
                             mAccountManager.addAccountExplicitly(account, mPassword, null);
-                            // Set contacts sync for this account.
                             ContentResolver.setSyncAutomatically(account,ContactsContract.AUTHORITY, true);
                             intent.putExtra(AccountManager.KEY_ACCOUNT_NAME, mUsername);
                             intent.putExtra(AccountManager.KEY_ACCOUNT_TYPE, Constants.ACCOUNT_TYPE);

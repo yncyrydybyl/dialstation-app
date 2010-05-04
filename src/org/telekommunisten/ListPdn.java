@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.ContactsContract.Data;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -33,6 +34,14 @@ public class ListPdn extends ListActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);   
+		Intent i = getIntent();
+		Log.d(tag,"data "+i.getDataString());
+		
+		if (getIntent().getData() != null) {
+		    Cursor c = getContentResolver().query(getIntent().getData(), new String[]{Data._ID, Data.DATA1}, null, null, null);
+		    c.moveToFirst();
+		    startActivity(new Intent(Intent.ACTION_CALL,  Uri.parse("tel:+" + c.getString(1))));
+		}
 	}
 
 	@Override
